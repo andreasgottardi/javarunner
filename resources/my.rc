@@ -1,0 +1,24 @@
+id ICON "icon.ico"
+1 VERSIONINFO
+FILEVERSION     0,0,0,1
+PRODUCTVERSION  0,0,0,1
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "040904E4"
+    BEGIN
+      VALUE "CompanyName", "Goa systems"
+      VALUE "FileDescription", "Java runner application"
+      VALUE "FileVersion", "0.0.0.1"
+      VALUE "InternalName", "javarun"
+      VALUE "LegalCopyright", "javarun"
+      VALUE "OriginalFilename", "javarunner.exe"
+      VALUE "ProductName", "Java runner application"
+      VALUE "ProductVersion", "0.0.0.1"
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x409, 1252
+  END
+END
