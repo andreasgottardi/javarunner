@@ -7,7 +7,7 @@ javarunner: res
 	    -o bin/javarunner.exe \
 	    -municode \
 		-mwindows \
-	    main.c java.c mylog.c bin/my.res \
+	    main.c java.c logging.c bin/my.res \
 	    -L"\Path\to\JDK\lib" \
 	    -ljvm
 
