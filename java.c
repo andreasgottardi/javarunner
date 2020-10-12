@@ -1,11 +1,32 @@
 #include <jni.h>
-#include <windows.h>
 #include <stdio.h>
+#include <dirent.h>
+#include <windows.h>
 
 #include "include/java.h"
 #include "include/logging.h"
 
-int startvm() {
+void listdir(char* directory, char* buff) {
+    DIR *d;
+    struct dirent *dir;
+    d = opendir(directory);
+	buff[0] = '\0';
+    if (d) {
+		strcat(buff, "-Djava.class.path=");
+		while ((dir = readdir(d)) != NULL) {
+			if(strcmp(".", dir->d_name) != 0 && strcmp("..", dir->d_name) != 0){
+				strcat(buff, directory);
+				strcat(buff, "\\");
+				strcat(buff, dir->d_name);
+				strcat(buff, ";");
+			}
+        }
+		buff[strlen(buff) - 1] = '\0';
+        closedir(d);
+    }
+}
+
+int startvm(char* libdir) {
 
 	JavaVM *jvm;
 	JNIEnv *env;
@@ -14,9 +35,13 @@ int startvm() {
 	JNI_GetDefaultJavaVMInitArgs(&args);
 	jstring jstr;
 	jobjectArray main_args;
+    char classpathbuffer[2048];
 
-	options[0].optionString = "-Dlogback.configurationFile=path\\to\\logback.xml";
-	options[1].optionString = "-Djava.class.path=\\list\\of\\jar\\libraries";
+    /* Generates the classpath into buffer data structure. */
+	listdir(libdir, classpathbuffer);
+
+	options[0].optionString = "-Dlogback.configurationFile=..\\logback.xml";
+	options[1].optionString = classpathbuffer;
 	
 	args.nOptions = 2;
 	args.options = options;
@@ -24,20 +49,15 @@ int startvm() {
 	args.version = JNI_VERSION_1_8;
 	args.options = options;
 
-	HINSTANCE hinstLib = LoadLibrary(TEXT("..\\jre\\bin\\server\\jvm.dll"));
-	
-	typedef jint (JNICALL *PtrCreateJavaVM) (JavaVM **, void **, void *);
-	PtrCreateJavaVM ptrCreateJavaVM = (PtrCreateJavaVM) GetProcAddress(hinstLib, "JNI_CreateJavaVM");
-	ptrCreateJavaVM(&jvm, (void**) &env, &args);
-
-	// JNI_CreateJavaVM(&jvm, (void**) &env, (void*) &args);
+	JNI_CreateJavaVM(&jvm, (void**) &env, (void*) &args);
+    
 	jclass main_class = (*env)->FindClass(env, "goa/systems/jni/Server");
 	jmethodID main_method = (*env)->GetStaticMethodID(env, main_class, "main", "([Ljava/lang/String;)V");
 	if (main_method == NULL) {
 		printf("Failed to find main functionn");
 		return -1;
 	}
-
+    
 	jstr = (*env)->NewStringUTF(env, "10");
 	main_args = (*env)->NewObjectArray(env, 1, (*env)->FindClass(env, "java/lang/String"), jstr);
 	(*env)->CallStaticVoidMethod(env, main_class, main_method, main_args);

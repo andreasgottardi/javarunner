@@ -4,10 +4,19 @@
 #include "include/java.h"
 #include "include/logging.h"
 
-
 int wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
-{ 
-	startvm();
-	WriteToLog("Program finished.", LOG_DEBUG);
+{
+	LPWSTR *szArglist;
+	int nrofargs;
+	szArglist = CommandLineToArgvW(GetCommandLineW(), &nrofargs);
+	char libdir[MAX_PATH];
+
+	for (size_t i = 0; i < nrofargs; i++) {
+		if(wcscmp(L"-l", szArglist[i]) == 0){
+			wcstombs(libdir, szArglist[i + 1], wcslen(szArglist[i + 1]));
+			i++;
+		}
+	}
+	startvm(libdir);
 	return 0;
 }
