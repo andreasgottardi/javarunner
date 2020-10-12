@@ -7,7 +7,7 @@
 
 int wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
 { 
-    startvm();
-    WriteToLog("Program finished.", LOG_DEBUG);
-    return 0;
+	startvm();
+	WriteToLog("Program finished.", LOG_DEBUG);
+	return 0;
 }
