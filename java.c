@@ -30,9 +30,12 @@ void listdir(char* directory, char* buff) {
     }
 }
 
-int startvm(char* libdir) {
+int startvm(char* libdir, char* jvmpath) {
 
-	HINSTANCE hinstLib = LoadLibrary(TEXT("C:\\path\\to\\jre\\bin\\server\\jvm.dll"));
+	wchar_t wtext[MAX_PATH];
+	mbstowcs(wtext, jvmpath, strlen(jvmpath) + 1);
+
+	HINSTANCE hinstLib = LoadLibrary(wtext);
 	PtrCreateJavaVM ptrCreateJavaVM = (PtrCreateJavaVM) GetProcAddress(hinstLib, "JNI_CreateJavaVM");
 	PtrInitArgs ptrGetDefaultJavaVMInitArgs = (PtrInitArgs) GetProcAddress(hinstLib, "JNI_GetDefaultJavaVMInitArgs");
 	
