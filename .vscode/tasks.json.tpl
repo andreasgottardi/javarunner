@@ -6,7 +6,10 @@
 			"type": "shell",
 			"command": "\\Path\\to\\Msys2\\mingw64\\bin\\mingw32-make.exe",
 			"args": [
-				"all"
+				"all",
+				"TARGETPATH=bin",
+				"SRCPATH=src",
+				"JAVAPATH=\\Path\\to\\JDK"
 			],
 			"group": {
 				"kind": "build",
@@ -15,7 +18,7 @@
 			"problemMatcher": [],
 			"options": {
 				"env": {
-					"PATH": "\\Path\\to\\Msys2\\mingw64\\bin:${env:PATH}"
+					"PATH": "\\Path\\to\\Msys2\\mingw64\\bin;${env:PATH}"
 				}
 			}
 		}

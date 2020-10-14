@@ -14,6 +14,5 @@ To build this project the following files have to be modified:
 
   * Copy `.vscode/c_cpp.properties.json.tpl` to `.vscode/c_cpp.properties.json`
   * Copy `.vscode/tasks.json.tpl` to `.vscode/tasks.json`
-  * Copy `makefile.tpl` to `makefile`
 
 Replace `\Path\to\JDK` with the path to the jdk on your system and `\Path\to\Msys2` with the path to the Msys2 installation.
